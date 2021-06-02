@@ -1,0 +1,231 @@
+Students类：
+package jihe;
+
+public class Students {
+	private String id;
+	private String name;
+	private String gender;
+	
+	public Students() {
+		super();
+	}
+	public Students(String id, String name, String gender) {
+		super();
+		this.id=id;
+		this.name=name;
+		this.gender=gender;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+}
+
+
+Studentscore类：
+package jihe;
+
+public class Studentscore {
+	private String id;
+	private String course;
+	private double score;
+	public Studentscore() {
+		super();
+	}
+	public Studentscore(String id, String course, double score) {
+		super();
+		this.id=id;
+		this.course=course;
+		this.score=score;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getCourse() {
+		return course;
+	}
+	public void setCourse(String course) {
+		this.course = course;
+	}
+	public double getScore() {
+		return score;
+	}
+	public void setScore(double score) {
+		this.score = score;
+	}
+	
+	
+}
+
+
+
+Studentresult类：
+package jihe;
+
+public class Studentresult {
+	private String id;
+	private String name;
+	private String gender;
+	private double average;
+	public Studentresult() {
+		super();
+	}
+	public Studentresult(String id, String name, String gender, double average) {
+		super();
+		this.id=id;
+		this.name= name;
+		this.gender = gender;
+		this.average = average;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public double getAverage() {
+		return average;
+	}
+	public void setAverage(double average) {
+		this.average = average;
+	}
+	@Override
+	public String toString() {
+		String msg;
+		msg="id:"+this.id+"\n";
+		msg+="name:"+this.name+"\n";
+		msg+="gender:"+this.gender+"\n";
+		msg+="average:"+this.average+"\n";
+		return msg;
+	}
+	
+}
+
+
+
+Classresult类：
+package jihe;
+
+public class Classresult {
+	private String course;
+	private double average;
+	public Classresult() {
+		super();
+	}
+	public Classresult(String course, double average) {
+		super();
+		this.course=course;
+		this.average=average;
+	}
+	
+	public String getCourse() {
+		return course;
+	}
+	public void setCourse(String course) {
+		this.course = course;
+	}
+	public double getAverage() {
+		return average;
+	}
+	public void setAverage(double average) {
+		this.average = average;
+	}
+	@Override
+	public String toString() {
+		String msg;
+		msg="course:"+this.course+"\n";
+		msg+="average:"+this.average+"\n";
+		return msg;
+	}
+	
+}
+
+StudentsDao类：
+package jihe;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentsDao {
+	public ArrayList<Students> studentRead(){
+		ArrayList<Students> StudentList = new ArrayList<Students>();
+		Scanner scan=new Scanner(System.in);
+		System.out.println("请输入学生信息：");
+		String message = scan.nextLine();
+		while(!message.equals("end"))
+		{
+			String info[] = message.split(",|，");
+			String id = info[0].trim();
+			String name = info[1].trim();
+			String gender = info[2].trim();
+			Students student = new Students(id,name,gender);
+			StudentList.add(student);
+			message = scan.nextLine();
+		}
+		return StudentList;
+	}
+	
+	public ArrayList<Studentscore> scoreRead(){
+		ArrayList<Studentscore> ScoreList = new ArrayList<Studentscore>();
+		Scanner scan= new Scanner(System.in);
+		String s=scan.nextLine();
+		System.out.println("请输入学生成绩：");
+		String classScore = scan.nextLine();
+		while(!classScore.equals("end"))
+		{
+			String info[] = classScore.split(",|，");
+			String id = info[0].trim();
+			String course = info[1].trim();
+			double score = Double.parseDouble(info[2].trim());
+			Studentscore studentScore = new Studentscore(id,course,score);
+			ScoreList.add(studentScore);
+			classScore = scan.nextLine();
+		}
+		return ScoreList;
+	}
+
+	public ArrayList<Studentresult> StudentWrite(ArrayList<Students> StudentList, ArrayList<Studentscore> ScoreList){
+		ArrayList<Studentresult> StudentResultList = new ArrayList<Studentresult>();
+		for(int i = 0;i < StudentList.size();i++)
+		{
+			Studentresult studentresult = new Studenresult();
+			studentresult.setId(StudentList.get(i).getId());
+			studentresult.setName(StudentList.get(i).getId());
+			studentresult.setGender(StudentList.get(i).getGender());
+			studentresult.setAverage(StudentAverage(ScoreList,studentresult.getId()));
+			StudentResultList.add(studentresult);
+		}
+		return StudentResultList;
+	}
+
+
