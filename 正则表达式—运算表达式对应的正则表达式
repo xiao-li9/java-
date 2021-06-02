@@ -1,0 +1,51 @@
+package week10;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Yanzheng {
+public static void main(String[] args) {
+	String express="add(min(12,3),max(1,sub(2,1)))";
+	String regex="((add)|(sub)|(max)|(min)|(doubleMe))\\(\\d{1,}(,\\d{1,})?\\)";
+	Pattern p=Pattern.compile(regex);
+	Matcher m=p.matcher(express);
+	String result=express;
+	while (m.find()){
+		String basicExpress=m.group();
+		String s=cal(basicExpress);
+		System.out.println(basicExpress+"="+s);
+		basicExpress=basicExpress.replaceAll("\\(","\\\\(");
+		basicExpress=basicExpress.replaceAll("\\)","\\\\)");
+		System.out.println("表达式为："+result);
+		result=result.replaceAll(basicExpress, s);
+		System.out.println("替换后："+result);
+		m=p.matcher(result);
+	}
+	System.out.println("运算结果：");
+	System.out.println(express+"="+result);
+}
+public static String cal(String express){
+		String result="";
+		String code=express.substring(0, express.indexOf("("));
+		System.out.println(code);
+		int iResult=0;
+		if(code.equals("doubleMe")){
+			String sFirst=express.substring(express.indexOf("(")+1, express.indexOf(")")-1);
+			int first=Integer.parseInt(sFirst);
+			iResult=first;
+		}
+		else{
+			String sFirst=express.substring(express.indexOf("(")+1, express.indexOf(","));
+			String sCecond=express.substring(express.indexOf(",")+1, express.indexOf(")"));
+			int first=Integer.parseInt(sFirst);
+			int second=Integer.parseInt(sCecond);
+			switch(code){
+			case "add":iResult=first+second;break;
+			case "sub":iResult=first-second;break;
+			case "max":iResult=first>second ? first: second;break;
+			case "min":iResult=first<second ?first: second;break;
+			}
+		}
+	}
+}
+
