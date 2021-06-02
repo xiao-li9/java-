@@ -1,0 +1,40 @@
+package week8;
+
+import java.util.Scanner;
+
+public class Message {
+	public static void main(String[] args) {
+		
+	
+	System.out.println("请输入运算表达式");
+	Scanner scan=new Scanner(System.in);
+	String express=scan.next();
+	
+	int pos1,pos2,pos3;
+	double resualt=0,num1=0,num2=0;
+	pos1=express.indexOf("(");
+	pos2=express.indexOf(",",pos1 );
+	pos3=express.indexOf(")", pos2);
+	String codeNum1=express.substring(pos1+1, pos2);
+	 num1=Double.parseDouble(codeNum1);
+	String operate=express.substring(0, pos1);
+	if(operate.equals("doubleMe")){
+		resualt=2*num1;
+	}
+	else {
+		String codeNum2=express.substring(pos2+1, pos3);
+		 num2=Double.parseDouble(codeNum2);
+	}
+	
+	switch(operate){
+	case "add":resualt=num1+num2;break;
+	case "sub":resualt=num1-num2;break;
+	case "multi":resualt=num1*num2;break;
+	case "chu":resualt=num1/num2;break;
+	case "doubleMe":break;
+	default:System.out.println("valid");
+	}
+	String info=express+"="+String.valueOf(resualt);
+	System.out.println(info);
+}
+}
