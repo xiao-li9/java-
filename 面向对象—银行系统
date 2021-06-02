@@ -1,0 +1,308 @@
+信用卡类：
+package week6;
+
+public class CheckingAccount extends BankAccount {
+	private double serviceFee;
+	public CheckingAccount() {
+		super();
+	}
+	public CheckingAccount(String accountNum,double balance,double serviceFee) {
+		super(accountNum,balance);
+		this.serviceFee=serviceFee;
+	}
+	
+	public double getServiceFee() {
+		return serviceFee;
+	}
+	public void setServiceFee(double serviceFee) {
+		this.serviceFee = serviceFee;
+	}
+	@Override
+	public String toString() {
+		return  super.toString()+"CheckingAccount [serviceFee=" + serviceFee +"]";
+	}
+	
+}
+
+
+储蓄卡类：
+package week6;
+
+import java.util.Scanner;
+
+public class SavingAccount extends BankAccount {
+	private double interesRate;
+	
+	public SavingAccount() {
+		super();
+	}
+	public SavingAccount(String accountNum,double balance,double interesRate) {
+		super(accountNum,balance);
+		this.interesRate=interesRate;
+	}
+	
+	public double getInteresRate() {
+		return interesRate;
+	}
+	public void setInteresRate(double interesRate) {
+		this.interesRate=interesRate;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return  super.toString()+ "SavingAccount [interesRate=" + interesRate+"]";
+	}
+}
+
+
+银行账户类：
+package week6;
+
+public class BankAccount {
+private String accountNum;
+private double balance;
+
+public BankAccount() {
+	super();
+}
+public BankAccount(String accountNum,double balance) {
+	this.accountNum=accountNum;
+	this.balance=balance;
+}
+public String getAccountNum() {
+	return accountNum;
+}
+public void setAccountNum(String accountNum) {
+	this.accountNum = accountNum;
+}
+public double getBalance() {
+	return balance;
+}
+public void setBalance(double balance) {
+	this.balance = balance;
+}
+public String toString() {
+	String msg;
+	msg="acccountNum="+this.accountNum;
+	msg+=",balabce="+this.balance;
+	return msg;
+}
+}
+
+用户类：
+package week6;
+
+import java.util.Scanner;
+
+public class Customer {
+private String ssn;
+private String name;
+private CheckingAccount ca;
+private SavingAccount sa;
+
+public Customer() {
+	super();
+}
+public Customer(String ssn,String name,CheckingAccount ca,SavingAccount sa) {
+	this.ssn=ssn;
+	this.name=name;
+	this.ca=ca;
+	this.sa=sa;
+}
+public String getSsn() {
+	return ssn;
+}
+public void setSsn(String ssn) {
+	this.ssn = ssn;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public CheckingAccount getCa() {
+	return ca;
+}
+public void setCa(CheckingAccount ca) {
+	this.ca = ca;
+}
+public SavingAccount getSa() {
+	return sa;
+}
+public void setSa(SavingAccount sa) {
+	this.sa = sa;
+}
+
+public String toString() {
+	String msg;
+	msg="ssn="+this.ssn;
+	msg+=",name="+this.name;
+	msg+=",CheckingAccout="+this.ca.toString();
+	msg+=",SavingAccount="+this.sa.toString();
+	return msg;
+	}
+}
+
+package week6;
+
+import java.util.Scanner;
+
+
+驱动类：
+public class Driver {
+	public static Customer customer;
+	/*public static SavingAccount Sa=null;
+	public static CheckingAccount Ca=null;*/
+public static void main(String[] args) {
+	int choose=menu();
+	while(choose!=8) {
+		switch(choose){
+			case 1:Create();break;
+			case 2:Deposit(customer.getSa().getBalance());break;
+			case 3:WithDraw(customer.getSa().getBalance());break;
+			case 4:Cusumption(customer.getCa().getBalance());break;
+			case 5:Repayment(customer.getCa().getBalance());break;
+			case 6:Settle_account();break;
+			default:System.out.println("输入无效");break;
+		}
+		choose=menu();
+	}
+	
+}
+public static int menu(){
+	int choose=0;
+	System.out.println("1.开户");
+	System.out.println("2.存款");
+	System.out.println("3.取款");
+	System.out.println("4.消费");
+	System.out.println("5.还款");
+	System.out.println("6.银行结算");
+	System.out.println("7.查询余额");
+	System.out.println("8.退出");
+	System.out.println("pleace erturn your choice");
+	Scanner scan=new Scanner(System.in);
+	choose=scan.nextInt();
+	return choose;
+}
+public static int submenu() {
+	int choose;
+	System.out.println("请选择开卡类型");
+	System.out.println("1.信用卡");
+	System.out.println("2.存储卡");
+	System.out.println("3.返回");
+	System.out.println("请选择（1~3）");
+	Scanner scan=new Scanner(System.in);
+	choose=scan.nextInt();
+		
+		return choose;
+		
+		
+	}
+public static void Create() {
+	int choose=submenu();
+	while(choose!=3){
+		switch(choose) {
+		case 1:CreateCheckingAccount();break;
+		case 2:CreateSavingAccount();break;
+		default:System.out.println("输入无效");break;
+		}
+		choose=submenu();
+	}
+	
+}
+public static void CreateSavingAccount(){
+	String ssn,name,accountNum;
+	double fee;
+	Scanner scan=new Scanner(System.in);
+	System.out.println("请输入身份证号");
+	ssn=scan.next();
+	System.out.println("请输入开户姓名");
+	name=scan.next();
+	System.out.println("请输入开户卡号");
+	accountNum=scan.next();
+	System.out.println("请输入年费");
+	fee=scan.nextDouble();
+	SavingAccount sa=new SavingAccount(accountNum,0,fee);
+	 customer=new Customer(ssn,name,null,sa);
+	if(customer!=null) {
+		System.out.println("存储卡开户成功");
+		
+	}
+	else {
+		System.out.println("存储卡开户失败");
+		
+	}
+	
+}
+public static void CreateCheckingAccount() {
+	String ssn,name,accountNum;
+	double serviceFee;
+	Scanner scan=new Scanner(System.in);
+	System.out.println("请输入身份证号");
+	ssn=scan.next();
+	System.out.println("请输入开户姓名");
+	name=scan.next();
+	System.out.println("请输入开户账号");
+	accountNum=scan.next();
+	System.out.println("请输入服务费");
+	serviceFee=scan.nextDouble();
+	CheckingAccount ca=new CheckingAccount("003",20000,2);
+	customer=new Customer (ssn,name,ca,null);
+	if(ca!=null) {
+		System.out.println("信用卡开户成功");
+	}
+	else {
+		System.out.println("信用卡开户失败");
+	}
+}
+public static void Deposit(double balance) {
+	
+	double money;
+	Scanner scan=new Scanner(System.in); 
+	System.out.println("请输入你要存储的存储卡金额：");
+	money=scan.nextDouble();
+	customer.getSa().setBalance(customer.getSa().getBalance()+money);
+	System.out.println("存储卡金额为"+customer.getSa().getBalance()+"元");
+	}
+public  static void WithDraw(double balance) {
+	
+	double money;
+	System.out.println("请输入取款金额：");
+	Scanner scan=new Scanner(System.in);
+	money=scan.nextDouble();
+	customer.getSa().setBalance(customer.getSa().getBalance()-money);
+	System.out.println("存储卡余额为"+customer.getSa().getBalance()+"元");
+	
+}
+public static void Cusumption(double balance) {
+	
+	double money;
+	System.out.println("请输入消费金额：");
+	Scanner scan=new Scanner(System.in);
+	money=scan.nextDouble();
+	customer.getCa().setBalance(customer.getCa().getBalance()+money);
+	System.out.println("信用卡余额为"+customer.getCa().getBalance()+"元");
+}
+public static void Repayment(double balance) {
+	double money;
+	System.out.println("请输入消费金额：");
+	Scanner scan=new Scanner(System.in);
+	money=scan.nextDouble();
+	customer.getCa().setBalance(customer.getCa().getBalance()+money);
+	System.out.println("信用卡余额为"+customer.getCa().getBalance()+"元");
+}
+public static void Settle_account() {
+	double Fee;
+	Fee=customer.getSa().getBalance()*(customer.getSa().getInteresRate());
+	customer.getSa().setBalance(customer.getSa().getBalance()+Fee);
+	System.out.println("存储卡余额为："+customer.getSa().getBalance()+"元");
+	customer.getCa().setBalance(customer.getCa().getBalance()-customer.getCa().getServiceFee());
+	System.out.println("信用卡余额为："+customer.getCa().getBalance());
+}
+public static void Display() {
+	System.out.println("存储卡余额为："+customer.getSa().getBalance()+"元");
+	System.out.println("信用卡余额为："+customer.getCa().getBalance()+"元");
+}
+}
