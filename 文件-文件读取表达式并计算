@@ -1,0 +1,97 @@
+package wenjian;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Files {
+	public static void main(String[] args) {
+		try{
+			String fileName = "c:/a/question.txt";
+			
+			File aFile = new File(fileName);
+			
+			FileReader fr = new FileReader(aFile);
+			
+			BufferedReader bf = new BufferedReader(fr);
+			
+			String aLine = "";
+			while((aLine=bf.readLine())!=null){
+				System.out.println(aLine);
+
+				String data;
+				data = deal(aLine);
+				File oFl = new File("c:/a/answers.txt");
+				FileWriter fw = new FileWriter(oFl);
+				PrintWriter pw = new PrintWriter(fw);
+				pw.print(data);
+				pw.close();
+			}
+
+			//5.关闭
+			bf.close();
+			fr.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public static String deal(String express) {
+		String regex = "((add)|(sub)|(max)|(min)|(doubleMe))\\(\\d{1,}(,\\d{1,})?\\)";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(express);
+		String result = express;
+		while(m.find()){
+			String basicExpress = m.group();
+			String s = cal(basicExpress);
+			System.out.println(basicExpress+"="+s);
+			basicExpress = basicExpress.replaceAll("\\(", "\\\\(");
+			basicExpress = basicExpress.replaceAll("\\)","\\\\)");
+			System.out.println("表达式为："+result);
+			result = result.replaceAll(basicExpress, s);
+			
+			m = p.matcher(result);
+		}
+		String msg="";
+		System.out.println("运算结果为：");
+		System.out.println(express+"="+result);
+		msg= express+"="+result;
+		return msg;
+}
+
+	public static String cal(String express){
+		//String result="";
+		int result;
+		String code=express.substring(0, express.indexOf("("));
+		//int Result=0;
+		
+		if(code.equals("doubleMe"))
+		{
+			String sFirst=express.substring(express.indexOf("(")+1, express.indexOf(")")-1);
+			int first=Integer.parseInt(sFirst);
+			result=first;
+		}
+		else{
+			String sFirst=express.substring(express.indexOf("(")+1, express.indexOf(","));
+			String sCecond=express.substring(express.indexOf(",")+1, express.indexOf(")"));
+			int first=Integer.parseInt(sFirst);
+			int second=Integer.parseInt(sCecond);
+			switch(code){
+			case "add":result=first+second;break;
+			case "sub":result=first-second;break;
+			case "muti":result=first*second;break;
+			case "div":result=first/second ;break;
+			}
+		}
+		String info = "";
+		info += result;
+		return info;
+	}
+}
